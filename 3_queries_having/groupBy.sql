@@ -25,13 +25,25 @@
 -- group by student 
 -- ORDER BY average_assignment_duration DESC;
 
-SELECT students.name AS student,
- avg(assignment_submissions.duration) AS average_assignment_duration,
- avg(assignments.duration) AS average_estimated_duration 
- FROM students 
- JOIN assignment_submissions ON students.id = student_id
- JOIN assignments ON assignments.id = assignment_id
- WHERE end_date is null
- GROUP BY student
- HAVING avg(assignment_submissions.duration) < avg(assignments.duration)
- ORDER by (average_assignment_duration);
+-- SELECT students.name AS student,
+--  avg(assignment_submissions.duration) AS average_assignment_duration,
+--  avg(assignments.duration) AS average_estimated_duration 
+--  FROM students 
+--  JOIN assignment_submissions ON students.id = student_id
+--  JOIN assignments ON assignments.id = assignment_id
+--  WHERE end_date is null
+--  GROUP BY student
+--  HAVING avg(assignment_submissions.duration) < avg(assignments.duration)
+--  ORDER by (average_assignment_duration);
+
+-- SELECT avg(total_students) as average_students FROM 
+-- (SELECT count(students) as total_students
+-- FROM students
+-- JOIN cohorts on cohorts.id = cohort_id
+-- GROUP BY cohorts) as totals_table;
+
+select * FROM assignments WHERE 
+ID NOT IN (SELECT assignment_id
+FROM assignment_submissions
+JOIN students ON students.id = student_id
+WHERE students.name = 'Ibrahim Schimmel');

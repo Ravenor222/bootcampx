@@ -1,0 +1,61 @@
+select count(*) as total_assistances,
+ name from assistance_requests JOIN
+  teachers on teachers.id = teacher_id 
+  WHERE name = 'Waylon Boehm' GROUP by name;
+
+
+SELECT count(assistance_requests.*),
+ students.name FROM assistance_requests 
+ JOIN students ON students.id = student_id 
+ WHERE students.name = 'Elliot Dickinson' 
+ GROUP BY students.name;
+
+SELECT teachers.name, students.name,
+assignments.name,
+completed_at - started_at as duration
+FROM assistance_requests 
+JOIN teachers on teacher_id = teachers.id 
+JOIN students on student_id = students.id
+JOIN assignments on assignment_id = assignments.id ORDER BY duration; 
+
+
+SELECT avg(completed_at - started_at) as average_assistance_request_duration FROM assistance_requests;
+ average_assistance_request_duration
+
+ select cohorts.name, sum(completed_at - started_at)
+from assistance_requests 
+ JOIN students on students.id = student_id 
+ JOIN cohorts on cohort_id = cohorts.id 
+ group by cohorts.name ORDER BY sum;
+
+ select avg(sum) as average_total 
+ FROM (select sum(completed_at - started_at) 
+ from assistance_requests
+  JOIN students on students.id = student_id
+   JOIN cohorts on cohort_id = cohorts.id
+    group by cohorts.name ORDER BY sum) 
+    as total_duration;
+
+select id, day, chapter, name, count(created_at) 
+FROM assistance_requests
+ JOIN students on student_id = students.id JOIN
+
+ select distinct(teachers.name), cohorts.name 
+ from cohorts 
+ JOIN students on cohorts.id = cohort_id 
+ JOIN assistance_requests ON students.id = student_id 
+ JOIN teachers ON teachers.id = teacher_id 
+ WHERE cohorts.name = 'JUL02' 
+ ORDER BY teachers.name;
+
+
+select distinct(teachers.name), 
+    cohorts.name, 
+    COUNT(created_at) as total_assistances 
+from cohorts 
+JOIN students on cohorts.id = cohort_id 
+JOIN assistance_requests ON students.id = student_id 
+JOIN teachers ON teachers.id = teacher_id 
+WHERE cohorts.name = 'JUL02'
+GROUP BY cohorts.name,teachers.name 
+ORDER BY teachers.name;
